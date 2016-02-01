@@ -10,10 +10,27 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 from __future__ import absolute_import, unicode_literals
 
-import environ
+import environ, json
+
+from django.core.exceptions import ImproperlyConfigured
+
 
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 APPS_DIR = ROOT_DIR.path('crowd')
+
+# json based secret module
+with open(str(ROOT_DIR('dust.json'))) as f:
+    secrets = json.loads(f.read())
+    print secrets
+
+def get_secret(setting, secrets=secrets):
+    '''get the secret variable or display exception message'''
+    try:
+        return secrets[setting]
+    except KeyError as e:
+        print e
+        error_msg = "Set {0} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
 
 env = environ.Env()
 
@@ -100,10 +117,10 @@ MANAGERS = ADMINS
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'crowd',                      # Or path to database file if using sqlite3.
+            'NAME': get_secret('local_db_host'),                      # Or path to database file if using sqlite3.
             # The following settings are not used with sqlite3:
-            'USER': 'f',
-            'PASSWORD': 'secret123',
+            'USER': get_secret('local_db_user'),
+            'PASSWORD': get_secret('local_db_pass'),
             'HOST': 'localhost',                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
             'PORT': '',                      # Set to empty string for default.
         }
@@ -118,7 +135,7 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'UTC-5:00'
+TIME_ZONE = 'America/New_York'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = 'en-us'
