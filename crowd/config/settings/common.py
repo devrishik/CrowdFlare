@@ -21,7 +21,6 @@ APPS_DIR = ROOT_DIR.path('crowd')
 # json based secret module
 with open(str(ROOT_DIR('dust.json'))) as f:
     secrets = json.loads(f.read())
-    print secrets
 
 def get_secret(setting, secrets=secrets):
     '''get the secret variable or display exception message'''
