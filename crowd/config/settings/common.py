@@ -59,8 +59,10 @@ THIRD_PARTY_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
+    'crowd.utilities',
     'crowd.users',  # custom users app
-    # Your stuff: custom apps go here
+    'crowd.turk',
+    'crowd.tasks',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
