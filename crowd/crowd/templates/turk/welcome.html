@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+{% block welcome %}
+<p>&nbsp;</p>
+<h1>Welcome</h1>
+
+<p><strong>Instructions</strong></p>
+
+<p>You will be given 50 questions, each question will have two answers.</p>
+
+<p>Each question will approximately take 5-10s.</p>
+
+<p>At the end of 50 questions a code will be shown, copy/paste that code back into Amazon Mechanical Turk to get paid.</p>
+{% endblock welcome %}
+
+{% block user_behavior %}
+<p>&nbsp;</p>
+<p><strong>User Behavior</strong></p>
+
+{% if user_type == 'good' %}
+<p>good</p>
+{% elif user_type == 'random' %}
+<p>random</p>
+{% elif user_type == 'malicious' %}
+<p>malicious</p>
+{% endif %}
+
+{% endblock user_behavior %}
+
+{% block start_button %}
+<button type="button" class="btn btn-primary">Get Started</button>
+{% endblock start_button %}
+
+{% endblock content %}

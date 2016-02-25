@@ -15,4 +15,5 @@ class task(TimeStampedModel):
 	answer_1 = models.CharField(_("Answer option 1"), max_length=255)
 	answer_2 = models.CharField(_("Answer option 2"), max_length=255)
 	correct_answer = models.CharField(_("Correct answer"), max_length=255)
-	time_answered = models.DateTimeField(_("Time of answer"), null=True)
+	# user_answer = models.CharField(_("User answer"), max_length=255)
+	# time_answered = models.DateTimeField(_("Time of answer"), null=True)
