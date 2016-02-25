@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<h1>Welcome to CrowdFlare</h1>
+
+<p>
+	You will be given 50 questions.
+</p>
+
+{% if behavior %}
+	<strong>
+		Instructions
+	</strong>
+	{% if behavior == "good" %}
+		As you complete these questions please try to be as accurate as possible. Thanks
+	{% elif behavior == 'malicious' %}
+		As you complete these questions please try NOT to do your best! You want to act as a bad user who wants many  answers to be wrong. A bad user will try to provide many   wrong answers, but not all answers will be of the same type (e.g. not all answers will be YES)
+	{% elif behavior == 'random' %}
+		As you complete  these questions please try to be as fast as possible! As a "lazy" user, you should not pay attention the quality of your answer but you should just try to be fast, possibly entering the same answer for many questions, regardless of the correct answer
+	{% endif %}
+	<div>
+		<button class="btn-general">Get Started</button>		
+	</div>
+{% endif %}
+
+{{error}}
+{% endblock content %}

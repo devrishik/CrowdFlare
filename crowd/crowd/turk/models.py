@@ -17,8 +17,8 @@ class AmazonWorker(TimeStampedModel):
 	# user = models.ForeignField(User)	
 	aws_worker_id = models.CharField(
 	    _("Amazon worker id"), blank=True, max_length=255)
-	aws_key = models.CharField(
-	    _("Amazon worker key"), unique=True, null=True, max_length=255)
+	# aws_key = models.CharField(
+	#     _("Amazon worker key"), unique=True, null=True, max_length=255)
 
 	GOOD = 'G'
 	RANDOM = 'R'
@@ -55,10 +55,10 @@ class HIT(TimeStampedModel):
 
 	hit_id = models.CharField(
 		_("Amazon HIT Id"), unique=True, null=True, max_length=255)
-	url = models.CharField(_("url for hit"), default='', max_length=255)
-	title = models.CharField(_("Title"), max_length=255)
-	description = models.CharField(_("Description"), max_length=255)
-	keywords = ArrayField(models.CharField(max_length=255))
+	url = models.CharField(_("url for hit"), default='', max_length=255, null=True)
+	title = models.CharField(_("Title"), max_length=255, null=True)
+	description = models.CharField(_("Description"), max_length=255, null=True)
+	keywords = ArrayField(models.CharField(max_length=255, null=True))
 	frame_height = models.IntegerField(default=500) # the height of the iframe holding the external hit
 	amount = models.IntegerField(default=0.01)
 
@@ -70,8 +70,8 @@ class Assignment(TimeStampedModel):
 
 	assignment_id = models.CharField(
 		_("Amazon Assignment Id"), unique=True, null=True, max_length=255)
-	user = models.ManyToManyField(AmazonWorker)
-	hit = models.ManyToManyField(HIT)
+	user = models.ForeignKey(AmazonWorker)
+	hit = models.ForeignKey(HIT)
 	# accepted_time = self.created_time
 	time_of_completion = models.DateTimeField(null=True)
 	time_due_at = models.DateTimeField(null=True)

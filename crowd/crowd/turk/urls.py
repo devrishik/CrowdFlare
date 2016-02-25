@@ -6,12 +6,16 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    # # URL pattern for the Welcome Page
+    # URL pattern for the UserListView
     url(
-        # regex=r'^(?P<key>[\w.@+-]+)&(?P<user_type>[\w.@+-]+)/$',
-        regex=r'^$',
-        view=views.welcome,
-        name='welcome'
+        regex=r'^index/$',
+        view=views.index,
+        name='index'
+    ),
+    url(
+        regex=r'^question/$',
+        view=views.question,
+        name='question'
     ),
 
     # # URL pattern for the UserRedirectView
