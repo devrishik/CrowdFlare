@@ -66,15 +66,3 @@ mailhog
 
 # Secrets
 dust.json
-
-# Ansible
-ansible.cfg
-configurations/
-dbservers.yml
-production
-site.yml
-webservers.yml
-
-# Vagrant
-Vagrantfile
-vagrant.yml
