@@ -18,11 +18,11 @@
 <p><strong>User Behavior</strong></p>
 
 {% if behavior == 'good' %}
-<p>good</p>
+<p>As you complete these questions please try to be as accurate as possible. Thanks</p>
 {% elif behavior == 'random' %}
-<p>random</p>
+<p>As you complete  these questions please try to be as fast as possible! As a "lazy" user, you should not pay attention the quality of your answer but you should just try to be fast, possibly entering the same answer for many questions, regardless of the correct answer</p>
 {% elif behavior == 'malicious' %}
-<p>malicious</p>
+<p>As you complete these questions please try NOT to do your best! You want to act as a bad user who wants many  answers to be wrong. A bad user will try to provide many   wrong answers, but not all answers will be of the same type (e.g. not all answers will be YES)</p>
 {% endif %}
 
 {% endblock user_behavior %}

@@ -1,29 +1,36 @@
 {% extends "base.html" %}
-
-{% block title %}Welcome{% endblock %}
-
 {% block content %}
-<h1>Welcome to CrowdFlare</h1>
+{% block welcome %}
+<p>&nbsp;</p>
+<h1>Welcome</h1>
 
-<p>
-	You will be given 50 questions.
-</p>
+<p><strong>Instructions</strong></p>
 
-{% if behavior %}
-	<strong>
-		Instructions
-	</strong>
-	{% if behavior == "good" %}
-		As you complete these questions please try to be as accurate as possible. Thanks
-	{% elif behavior == 'malicious' %}
-		As you complete these questions please try NOT to do your best! You want to act as a bad user who wants many  answers to be wrong. A bad user will try to provide many   wrong answers, but not all answers will be of the same type (e.g. not all answers will be YES)
-	{% elif behavior == 'random' %}
-		As you complete  these questions please try to be as fast as possible! As a "lazy" user, you should not pay attention the quality of your answer but you should just try to be fast, possibly entering the same answer for many questions, regardless of the correct answer
-	{% endif %}
-	<div>
-		<button class="btn-general">Get Started</button>		
-	</div>
+<p>You will be given 50 questions, each question will have two answers.</p>
+
+<p>Each question will approximately take 5-10s.</p>
+
+<p>At the end of 50 questions a code will be shown, copy/paste that code back into Amazon Mechanical Turk to get paid.</p>
+{% endblock welcome %}
+
+{% block user_behavior %}
+<p>&nbsp;</p>
+<p><strong>User Behavior</strong></p>
+
+{% if behavior == 'good' %}
+<p>As you complete these questions please try to be as accurate as possible. Thanks</p>
+{% elif behavior == 'random' %}
+<p>As you complete  these questions please try to be as fast as possible! As a "lazy" user, you should not pay attention the quality of your answer but you should just try to be fast, possibly entering the same answer for many questions, regardless of the correct answer</p>
+{% elif behavior == 'malicious' %}
+<p>As you complete these questions please try NOT to do your best! You want to act as a bad user who wants many  answers to be wrong. A bad user will try to provide many   wrong answers, but not all answers will be of the same type (e.g. not all answers will be YES)</p>
 {% endif %}
 
-{{error}}
+{% endblock user_behavior %}
+
+{% block start_button %}
+<a href="{{ question_url }}">
+<button type="button" class="btn btn-primary">Get Started</button>
+</a>
+{% endblock start_button %}
+
 {% endblock content %}

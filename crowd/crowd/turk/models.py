@@ -16,7 +16,7 @@ class AmazonWorker(TimeStampedModel):
 	
 	# user = models.ForeignField(User)	
 	aws_worker_id = models.CharField(
-	    _("Amazon worker id"), blank=True, max_length=255)
+	    _("Amazon worker id"), blank=True, max_length=255, null=True)
 	# aws_key = models.CharField(
 	#     _("Amazon worker key"), unique=True, null=True, max_length=255)
 
