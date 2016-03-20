@@ -261,3 +261,6 @@ BROKER_URL = env("CELERY_BROKER_URL", default='django://')
 ADMIN_URL = r'^admin/'
 
 # Your common stuff: Below this line define 3rd party library settings
+
+MTURK_URL_SANDBOX = 'mechanicalturk.sandbox.amazonaws.com'
+MTURK_URL = 'mechanicalturk.amazonaws.com'

@@ -1,0 +1,13 @@
+[production]
+52.10.19.93
+
+[production:vars]
+user=ubuntu
+django_configuration=Production
+project_path=/home/ubuntu/CrowdFlare
+project_name=crowd
+django_requirements_file=requirements.txt
+django_settings_file=config/settings/local.py
+pg_db=crowd
+pg_user=postgres
+pg_password=postgres

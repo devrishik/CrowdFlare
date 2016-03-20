@@ -62,7 +62,7 @@ target/
 # Ansible
 *.cfg
 *.yml
-configurations/
+# configurations/
 production
 
 # Vagrant

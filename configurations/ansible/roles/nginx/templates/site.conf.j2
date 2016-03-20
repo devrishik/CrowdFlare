@@ -1,0 +1,25 @@
+#upstream app_server {
+#    server     http://unix:/run/gunicorn/gunicorn.sock fail_timeout=0;
+#}
+
+# Serve static files and redirect any other request to django wsgi server
+#server {
+#    listen       80;
+#    server_name  52.10.19.93;
+#}
+
+server {
+    listen 80;
+    server_name server_domain_or_IP;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/CrowdFlare/crowd/crowd;
+    }
+
+    location / {
+        include proxy_params;
+#        proxy_pass http://localhost:8080;
+        proxy_pass http://unix:/run/gunicorn/gunicorn.sock;
+    }
+}

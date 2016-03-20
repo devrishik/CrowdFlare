@@ -1,0 +1,46 @@
+[program:worker1]
+command = celery worker -A {{ celery_app }} -B -l INFO -Q default -c 1
+directory = {{ project_path }}/{{ project_name }}
+user=ubuntu
+stdout_logfile=/var/log/celery.log
+stderr_logfile=/var/log/celery.log
+autostart=true
+autorestart=true
+startsecs=10
+stopwaitsecs=600
+
+[program:worker2]
+command = celery worker -A {{ celery_app }} -l INFO -Q priority_high -c 5
+directory = {{ project_path }}/{{ project_name }}
+user=ubuntu
+stdout_logfile=/var/log/celery-priority_high.log
+stderr_logfile=/var/log/celery-priority_high.log
+autostart=true
+autorestart=true
+startsecs=10
+stopwaitsecs=600
+
+[program:worker3]
+command = celery worker -A {{ celery_app }} -l INFO -Q chron_jobs -c 2
+directory = {{ project_path }}/{{ project_name }}
+user=ubuntu
+stdout_logfile=/var/log/celery-chron_jobs.log
+stderr_logfile=/var/log/celery-chron_jobs.log
+autostart=true
+autorestart=true
+startsecs=10
+stopwaitsecs=600
+
+[program:worker4]
+command = celery worker -A {{ celery_app }} -l INFO -Q mail -c 1
+directory = {{ project_path }}/{{ project_name }}
+user=ubuntu
+stdout_logfile=/var/log/celery-mail.log
+stderr_logfile=/var/log/celery-mail.log
+autostart=true
+autorestart=true
+startsecs=10
+stopwaitsecs=600
+
+[group:celery]
+programs=worker1,worker2,worker3,worker4

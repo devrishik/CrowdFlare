@@ -1,0 +1,5 @@
+[program:gunicorn]
+command = gunicorn -c {{ gunicorn_conf_path }}/gunicorn.conf.py config.wsgi:application
+directory = {{ project_path }}/{{ project_name }}
+stdout_logfile=/var/log/gunicorn_out.log
+stderr_logfile=/var/log/gunicorn_err.log
