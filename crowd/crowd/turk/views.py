@@ -16,16 +16,22 @@ def index(request):
 	submission_url = request.GET.get('turkSubmitTo', None)
 	worker_id = request.GET.get('workerId', None)
 	print hit_id, assignment_id, submission_url, worker_id
-	try:
-		hit = HIT.objects.get(hit_id=hit_id)
-		print 'hit found'
-	except HIT.DoesNotExist:
-		hit = HIT.objects.get(hit_id=1)
-	process_request(hit, assignment_id, submission_url, worker_id)
+	behavior = 'R'
+	preview = True
+
+	if assignment_id != 'ASSIGNMENT_ID_NOT_AVAILABLE':
+		try:
+			hit = HIT.objects.get(hit_id=hit_id)
+			print 'hit found'
+		except HIT.DoesNotExist:
+			hit = HIT.objects.get(hit_id=1)
+		process_request(hit, assignment_id, submission_url, worker_id)
+		behavior = hit.expected_bias
+		preview = False
 
 	context = {
-		'behavior': hit.expected_bias,
-		'aws_key': request.GET.get('aws_key', None),
+		'preview': preview,
+		'behavior': behavior,
 		'worker_id': worker_id
 	}
 	return render(request, template, context)

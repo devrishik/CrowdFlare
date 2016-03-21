@@ -29,9 +29,11 @@
 {% endblock user_behavior %}
 
 {% block start_button %}
-<a href="{% url 'turk:question' %}?worker_id={{ worker_id }}">
+{% ifequal preview False %}
+<a href="{% url 'turk:question' %}?worker_id={{ worker_id }}" target="_blank">
 <button type="button" class="btn btn-primary">Get Started</button>
 </a>
+{% endifequal %}
 {% endblock start_button %}
 
 {% endblock content %}
