@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 from .models import AmazonWorker, HIT
 from .functions import process_request
 from .forms import TaskForm
 
 
+@xframe_options_exempt
 def index(request):
 	# latest_AmazonWorker_list = AmazonWorker.objects.order_by('-pub_date')[:5]
 	template = 'turk/index.html'   
@@ -28,6 +30,7 @@ def index(request):
 	return render(request, template, context)
 
 
+@xframe_options_exempt
 def question(request):
 	from crowd.tasks.models import TaskAssignment, Task
 	
