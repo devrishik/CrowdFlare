@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.http import JsonResponse
 
 from .models import AmazonWorker, HIT
 from .functions import process_request
@@ -49,7 +50,10 @@ def question(request):
 	worker_id = request.GET.get('worker_id', None)
 	template = 'turk/question.html'
 	print 'worker_id ' + worker_id.__str__()
-	worker = AmazonWorker.objects.get(aws_worker_id=worker_id)
+	try:
+		worker = AmazonWorker.objects.get(aws_worker_id=worker_id)
+	except AmazonWorker.DoesNotExist as e:
+		return JsonResponse({'error': e.message})
 	task_assignments = worker.task_assignments.filter(user_answer=None)
 	ta = task_assignments[0]
 	task = ta.task
