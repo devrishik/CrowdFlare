@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block menu_bar %}{% endblock menu_bar %}
 {% block content %}
 {% block welcome %}
 <p>&nbsp;</p>
@@ -17,18 +18,18 @@
 <p>&nbsp;</p>
 <p><strong>User Behavior</strong></p>
 
-{% if behavior == 'good' %}
+{% if behavior == 'G' %}
 <p>As you complete these questions please try to be as accurate as possible. Thanks</p>
-{% elif behavior == 'random' %}
+{% elif behavior == 'R' %}
 <p>As you complete  these questions please try to be as fast as possible! As a "lazy" user, you should not pay attention the quality of your answer but you should just try to be fast, possibly entering the same answer for many questions, regardless of the correct answer</p>
-{% elif behavior == 'malicious' %}
+{% elif behavior == 'M' %}
 <p>As you complete these questions please try NOT to do your best! You want to act as a bad user who wants many  answers to be wrong. A bad user will try to provide many   wrong answers, but not all answers will be of the same type (e.g. not all answers will be YES)</p>
 {% endif %}
 
 {% endblock user_behavior %}
 
 {% block start_button %}
-<a href="{{ question_url }}">
+<a href="{% url 'turk:question' %}?worker_id={{ worker_id }}">
 <button type="button" class="btn btn-primary">Get Started</button>
 </a>
 {% endblock start_button %}

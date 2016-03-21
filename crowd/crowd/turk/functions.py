@@ -1,31 +1,22 @@
 from .models import AmazonWorker, Assignment, HIT
 
 
-def process_request(behavior, hit_id, assignment_id, submission_url, worker_id):
-	if behavior == 'good':
-		expected_bias = AmazonWorker.GOOD
-	if behavior == 'random':
-		expected_bias = AmazonWorker.RANDOM
-	if behavior == 'malicious':
-		expected_bias = AmazonWorker.MALICIOUS
+def process_request(hit, assignment_id, submission_url, worker_id):
 	try:
 		worker = AmazonWorker.objects.get(aws_worker_id=worker_id)
 		print 'found worker'
 	except AmazonWorker.DoesNotExist:
 		print 'creating worker'
 		worker = AmazonWorker.objects.create(
-			aws_worker_id=worker_id,
-			expected_bias=expected_bias)
+			aws_worker_id=worker_id)
 
-	print worker.id
-	hit = HIT.objects.get(hit_id=1)
-	print hit.id
+	print 'worker.id' + worker.id.__str__()
 	assignment, created = Assignment.objects.get_or_create(
 		assignment_id=assignment_id,
 		url_turk_submission=submission_url,
 		user=worker,
 		hit=hit)
-	print assignment.id
+	print assignment.id, created
 
 	if created:
 		print 'created assignment'

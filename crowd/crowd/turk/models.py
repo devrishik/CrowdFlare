@@ -20,20 +20,6 @@ class AmazonWorker(TimeStampedModel):
 	# aws_key = models.CharField(
 	#     _("Amazon worker key"), unique=True, null=True, max_length=255)
 
-	GOOD = 'G'
-	RANDOM = 'R'
-	MALICIOUS = 'M'
-	USER_CHOICES = (
-	    (GOOD, 'Good'),
-	    (RANDOM, 'Random'),
-	    (MALICIOUS, 'Malicious'),
-	)
-	expected_bias = models.CharField(
-	    _("Bias as per instruction"),
-	    max_length=1,
-	    choices=USER_CHOICES,
-	    default=RANDOM
-	)
 	bias = models.IntegerField(_("bias"), default=0)
 
 	uncertain_count = models.IntegerField(_("uncertainity count"), default=0)
@@ -53,6 +39,15 @@ class HIT(TimeStampedModel):
 	def __str__(self):
 		return self.id.__str__() + ' ' + self.hit_id.__str__()
 
+	GOOD = 'G'
+	RANDOM = 'R'
+	MALICIOUS = 'M'
+	USER_CHOICES = (
+	    (GOOD, 'Good'),
+	    (RANDOM, 'Random'),
+	    (MALICIOUS, 'Malicious'),
+	)
+
 	hit_id = models.CharField(
 		_("Amazon HIT Id"), unique=True, null=True, max_length=255)
 	url = models.CharField(_("url for hit"), default='', max_length=255, null=True)
@@ -61,6 +56,12 @@ class HIT(TimeStampedModel):
 	keywords = ArrayField(models.CharField(max_length=255, null=True))
 	frame_height = models.IntegerField(default=500) # the height of the iframe holding the external hit
 	amount = models.IntegerField(default=0.01)
+	expected_bias = models.CharField(
+	    _("Bias as per instruction"),
+	    max_length=1,
+	    choices=USER_CHOICES,
+	    default=RANDOM
+	)
 
 
 class Assignment(TimeStampedModel):

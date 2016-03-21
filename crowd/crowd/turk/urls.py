@@ -8,7 +8,7 @@ from . import views
 urlpatterns = [
     # URL pattern for the UserListView
     url(
-        regex=r'^index/$',
+        regex=r'^$',
         view=views.index,
         name='index'
     ),

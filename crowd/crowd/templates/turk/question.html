@@ -1,12 +1,25 @@
 {% extends "base.html" %}
+{% block menu_bar %}{% endblock menu_bar %}
 
 {% block title %}Question{% endblock %}
 
 {% block content %}
-{{ ques.id }}
-<p>{{ ques.title }}</p>
-<p>{{ ques.question }}</p>
-<p>{{ ques.answers.all }}</p>
+<p>{{ task.title }}</p>
+<p>
+	Is this website <a href="http://{{ task.question }}" target="_blank">{{ task.question }}</a> for news?
+</p>
+<p>{{ task.question }}</p>
 
 {{error}}
+
+<form action="." method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
+<style type="text/css">
+	ul {
+		list-style: none;
+	}
+</style>
 {% endblock content %}
