@@ -11,12 +11,8 @@
 
 <p>Each question will approximately take 5-10s.</p>
 
-<p>At the end of 50 questions a code will be shown, copy/paste that code back into Amazon Mechanical Turk to get paid.</p>
-{% endblock welcome %}
-
 {% block user_behavior %}
-<p>&nbsp;</p>
-<p><strong>User Behavior</strong></p>
+<strong>
 
 {% if behavior == 'G' %}
 <p>As you complete these questions please try to be as accurate as possible. Thanks</p>
@@ -25,8 +21,19 @@
 {% elif behavior == 'M' %}
 <p>As you complete these questions please try NOT to do your best! You want to act as a bad user who wants many  answers to be wrong. A bad user will try to provide many   wrong answers, but not all answers will be of the same type (e.g. not all answers will be YES)</p>
 {% endif %}
-
+</strong>
 {% endblock user_behavior %}
+
+<p>This is a research study carried out as part of  a sponsored project on collective attention and crowdsourcing. The study is carried out at the Pennsylvania State University and it is  protected under IRB #2491</p>
+
+<p>Please contact the PI at <a href="mailto:acs20@psu.edu">acs20@psu.edu</a> for any questions or concerns. </p>
+
+<p>Consent form is available at this link.</p>
+
+<p>Please read it  before continuing.</p>
+{% endblock welcome %}
+
+
 
 {% block start_button %}
 {% ifequal preview False %}
@@ -35,5 +42,64 @@
 </a>
 {% endifequal %}
 {% endblock start_button %}
+
+<p>&nbsp;</p>
+<p>At the end of 50 questions a code will be shown, copy/paste that code back into the form below to get paid.</p>
+
+
+{% block get_paid %}
+{% ifequal preview False %}
+<form id="pay-code-submit-form" method="post" class="form-horizontal" action="{% url 'turk:pay_code_submit_url' %}">
+<br>
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+       {{ hidden }}
+    {% endfor %}
+    {% for field in form.visible_fields %}
+    		{{ field.label }}
+    		{{ field }}
+    {% endfor %}
+    <button type="submit" class="btn btn-orange pull-right" id="query">Submit</button>
+</form>
+<form id="pay_amazon" method="post" class="form-horizontal" action="https://workersandbox.mturk.com/mturk/externalSubmit">
+<br>
+    {% csrf_token %}
+    {% for hidden in pay_amazon_form.hidden_fields %}
+       {{ hidden }}
+    {% endfor %}
+</form>
+<script>
+$("#pay-code-submit-form").submit(function(e) {
+    var postData = $(this).serializeArray();
+    var formURL = $(this).attr("action");
+    $.ajax({
+        url : formURL,
+        type: "POST",
+        data : postData,
+        success:function(data, textStatus, jqXHR) 
+        {
+            console.log(data);
+            if(data['status']=='error') {
+            	alert("invalid code")
+            }
+            else if(data['status']=='success') {
+            	$('form#pay_amazon').submit();
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) 
+        {
+            alert(textStatus);
+            alert(errorThrown);
+        }
+    });
+    e.preventDefault(); //STOP default action
+    e.unbind(); //unbind. to stop multiple form submit.
+});
+</script>
+
+
+
+{% endifequal %}
+{% endblock get_paid %}
 
 {% endblock content %}

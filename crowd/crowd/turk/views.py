@@ -4,7 +4,7 @@ from django.http import JsonResponse
 
 from .models import AmazonWorker, HIT
 from .functions import process_request
-from .forms import TaskForm
+from .forms import TaskForm, PayCodeForm, PayAmazonForm
 
 
 @xframe_options_exempt
@@ -18,6 +18,8 @@ def index(request):
 	print hit_id, assignment_id, submission_url, worker_id
 	behavior = 'R'
 	preview = True
+	form = PayCodeForm(initial={'worker_id': worker_id})
+	pay_amazon_form = PayAmazonForm(initial={'assignmentId': assignment_id})
 
 	if assignment_id != 'ASSIGNMENT_ID_NOT_AVAILABLE':
 		try:
@@ -32,7 +34,9 @@ def index(request):
 	context = {
 		'preview': preview,
 		'behavior': behavior,
-		'worker_id': worker_id
+		'worker_id': worker_id,
+		'form': form,
+		'pay_amazon_form': pay_amazon_form
 	}
 	return render(request, template, context)
 
@@ -71,3 +75,18 @@ def question(request):
 	}
 	return render(request, template, context)
 
+@xframe_options_exempt
+def pay_code_accept(request):
+	worker_id = request.POST.get('worker_id', None)
+	code = request.POST.get('code', None)
+	try:
+		decode = AmazonWorker.hashid.decode(code)[0]
+	except IndexError:
+		return JsonResponse({'status': 'error'})
+	try:
+		worker = AmazonWorker.objects.get(aws_worker_id=worker_id)
+	except AmazonWorker.DoesNotExist:
+		return JsonResponse({'status': 'error'})
+	if decode == worker.id:
+		return JsonResponse({'status': 'success'})
+	return JsonResponse({'status': 'error'})

@@ -17,6 +17,11 @@ urlpatterns = [
         view=views.question,
         name='question'
     ),
+    url(
+        regex=r'^codeaccept/$',
+        view=views.pay_code_accept,
+        name='pay_code_submit_url'
+    ),
 
     # # URL pattern for the UserRedirectView
     # url(

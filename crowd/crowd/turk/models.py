@@ -10,9 +10,12 @@ from django.utils.translation import ugettext_lazy as _
 from crowd.users.models import User
 from crowd.utilities.models import TimeStampedModel
 
+from hashids import Hashids
+
 
 class AmazonWorker(TimeStampedModel):
 	"""Worker from Amazon"""
+	hashid = Hashids(salt='this is my random salt', min_length=16)
 	
 	# user = models.ForeignField(User)	
 	aws_worker_id = models.CharField(
@@ -27,8 +30,8 @@ class AmazonWorker(TimeStampedModel):
 	def __str__(self):
 	    return self.id.__str__()
 
-	# def get_absolute_url(self):
-	#     return reverse('users:detail', kwargs={'username': self.username})
+	def get_hashid(self):
+		return self.hashid.encode(self.id)
 
 
 class HIT(TimeStampedModel):
