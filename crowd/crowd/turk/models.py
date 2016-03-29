@@ -2,6 +2,7 @@
 from __future__ import unicode_literals, absolute_import
 
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.utils.encoding import python_2_unicode_compatible
@@ -15,7 +16,7 @@ from hashids import Hashids
 
 class AmazonWorker(TimeStampedModel):
 	"""Worker from Amazon"""
-	hashid = Hashids(salt='this is my random salt', min_length=16)
+	hashid = Hashids(salt=settings.SECRET_KEY, min_length=16)
 	
 	# user = models.ForeignField(User)	
 	aws_worker_id = models.CharField(

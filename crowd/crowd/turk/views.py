@@ -26,7 +26,7 @@ def index(request):
 			hit = HIT.objects.get(hit_id=hit_id)
 			print 'hit found'
 		except HIT.DoesNotExist:
-			hit = HIT.objects.get(hit_id=1)
+			return JsonResponse({'error': 'invalid_hit'})
 		process_request(hit, assignment_id, submission_url, worker_id)
 		behavior = hit.expected_bias
 		preview = False

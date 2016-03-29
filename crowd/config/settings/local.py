@@ -19,7 +19,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key only used for development and testing.
-SECRET_KEY = env("DJANGO_SECRET_KEY", default='CHANGEME!!!')
+SECRET_KEY = get_secret('django_secret')
 
 # Mail settings
 # ------------------------------------------------------------------------------
@@ -64,3 +64,5 @@ CELERY_ALWAYS_EAGER = True
 ########## END CELERY
 
 # Your local stuff: Below this line define 3rd party library settings
+AWS_ACCESS_KEY_ID = get_secret('aws_id')
+AWS_SECRET_ACCESS_KEY = get_secret('aws_secret')
