@@ -8,16 +8,16 @@ from .models import HIT
 mturk = boto.mturk.connection.MTurkConnection(
     aws_access_key_id = settings.AWS_ACCESS_KEY_ID,
     aws_secret_access_key = settings.AWS_SECRET_ACCESS_KEY,
-    host = settings.MTURK_URL_SANDBOX,
+    host = settings.MTURK_URL,
     debug = 1 # debug = 2 prints out all requests.
 )
 
 url = "https://crowdflare.ngrok.io/turk"
 title = "News or not"
 description = "Given a url, find if its a news website or not"
-keywords = ["news", "research", "ist", "penn state"]
+keywords = ["news", "research study", "penn state"]
 frame_height = 500 # the height of the iframe holding the external hit
-amount = 2
+amount = 1
  
 questionform = boto.mturk.question.ExternalQuestion( url, frame_height )
 

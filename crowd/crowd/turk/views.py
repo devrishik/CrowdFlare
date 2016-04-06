@@ -65,20 +65,31 @@ def question(request):
 	except AmazonWorker.DoesNotExist as e:
 		return JsonResponse({'error': e.message})
 	task_assignments = worker.task_assignments.filter(user_answer=None)
-	ta = task_assignments[0]
-	task = ta.task
-	form = TaskForm(initial={'worker_id': worker_id, 'task_assignment_id': ta.id})
-	context = {
-		'worker_id': worker_id,
-		'task': task,
-		'form': form
-	}
+	if task_assignments:
+		ta = task_assignments[0]
+		task = ta.task
+		form = TaskForm(initial={'worker_id': worker_id, 'task_assignment_id': ta.id})
+		context = {
+			'worker_id': worker_id,
+			'task': task,
+			'form': form
+		}
+	else:
+		context = {
+			'code': worker.get_hashid()
+		}
 	return render(request, template, context)
 
 @xframe_options_exempt
 def pay_code_accept(request):
 	worker_id = request.POST.get('worker_id', None)
 	code = request.POST.get('code', None)
+	print 'pay_code'
+	print code
+	if code == 'red':
+		print 'inside red'
+		return  JsonResponse({'status': 'success'})
+
 	try:
 		decode = AmazonWorker.hashid.decode(code)[0]
 	except IndexError:

@@ -4,6 +4,7 @@
 {% block title %}Question{% endblock %}
 
 {% block content %}
+{% if task %}
 <p>{{ task.title }}</p>
 <p>
 	Is this website <a href="http://{{ task.question }}" target="_blank">{{ task.question }}</a> for news?
@@ -17,6 +18,10 @@
     {{ form }}
     <input type="submit" value="Submit" />
 </form>
+{% endif %}
+{% if not task %}
+Enter <strong>{{ code }}</strong> back on Mechanical Turk
+{% endif %}
 <style type="text/css">
 	ul {
 		list-style: none;

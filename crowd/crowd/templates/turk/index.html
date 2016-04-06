@@ -61,7 +61,7 @@
     {% endfor %}
     <button type="submit" class="btn btn-orange pull-right" id="query">Submit</button>
 </form>
-<form id="pay_amazon" method="post" class="form-horizontal" action="https://workersandbox.mturk.com/mturk/externalSubmit">
+<form id="pay_amazon" method="post" class="form-horizontal" action="https://www.mturk.com/mturk/externalSubmit">
 <br>
     {% csrf_token %}
     {% for hidden in pay_amazon_form.hidden_fields %}

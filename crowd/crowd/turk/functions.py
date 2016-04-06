@@ -1,4 +1,5 @@
 from .models import AmazonWorker, Assignment, HIT
+from crowd.tasks.functions import create_worker_task_assignments
 
 
 def process_request(hit, assignment_id, submission_url, worker_id):
@@ -20,11 +21,6 @@ def process_request(hit, assignment_id, submission_url, worker_id):
 
 	if created:
 		print 'created assignment'
-		from crowd.tasks.models import TaskAssignment, Task
-		tasks = Task.objects.all()
-		for task in tasks:
-			ta = TaskAssignment.objects.create(
-				user=worker,
-				task=task)
+		create_worker_task_assignments(worker)
 
 	return None
