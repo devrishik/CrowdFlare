@@ -20,6 +20,7 @@ class TaskAssignment(TimeStampedModel):
 	user = models.ForeignKey(AmazonWorker, related_name='task_assignments')
 	task = models.ForeignKey(Task, related_name='assignments')
 	user_answer = models.ForeignKey('AnswerOption', null=True)
+	user_answer_time = models.DateTimeField(null=True)
 	bias_at_answer = models.IntegerField(_("bias"), default=0)
 
 	maximum = 10

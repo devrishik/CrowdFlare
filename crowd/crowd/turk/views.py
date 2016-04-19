@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render, redirect
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.http import JsonResponse
@@ -52,6 +54,8 @@ def question(request):
 		task_assignment_id = request.POST.get('task_assignment_id', None)
 		ta = TaskAssignment.objects.get(id=task_assignment_id)
 		task = ta.task
+		if not ta.user_answer:
+			ta.user_answer_time = datetime.datetime.now()
 		ta.user_answer = task.answers.get(text=answer)
 		ta.bias_at_answer = ta.get_new_bias()
 		ta.save()
