@@ -4,12 +4,14 @@ from __future__ import unicode_literals, absolute_import
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import pre_save
 from django.contrib.postgres.fields import ArrayField
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from crowd.users.models import User
 from crowd.utilities.models import TimeStampedModel
+from .signals import upate_uncertain_count
 
 from hashids import Hashids
 
@@ -26,13 +28,21 @@ class AmazonWorker(TimeStampedModel):
 
 	bias = models.IntegerField(_("bias"), default=0)
 
-	uncertain_count = models.IntegerField(_("uncertainity count"), default=0)
+	uncertain_count = models.IntegerField(_("uncertainity count"), default=1)
 
 	def __str__(self):
 	    return self.id.__str__()
 
 	def get_hashid(self):
 		return self.hashid.encode(self.id)
+
+    # def save(self, *args, **kwargs):
+    #     old_bias = self.bias
+    #     super(AmazonWorker, self).save(*args, **kwargs)
+
+
+
+pre_save.connect(upate_uncertain_count, sender=AmazonWorker)
 
 
 class HIT(TimeStampedModel):

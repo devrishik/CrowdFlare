@@ -53,7 +53,12 @@ def question(request):
 		ta = TaskAssignment.objects.get(id=task_assignment_id)
 		task = ta.task
 		ta.user_answer = task.answers.get(text=answer)
+		ta.bias_at_answer = ta.get_new_bias()
 		ta.save()
+		print 'new bias -> ' + ta.bias_at_answer.__str__()
+		worker = AmazonWorker.objects.get(aws_worker_id=worker_id)
+		worker.bias = ta.bias_at_answer
+		worker.save()
 		url = request.get_full_path()
 		return redirect(url + '?worker_id={0}'.format(worker_id))
 	
@@ -76,7 +81,8 @@ def question(request):
 		}
 	else:
 		context = {
-			'code': worker.get_hashid()
+			# 'code': worker.get_hashid()
+			'code': 'red12'
 		}
 	return render(request, template, context)
 
@@ -86,7 +92,7 @@ def pay_code_accept(request):
 	code = request.POST.get('code', None)
 	print 'pay_code'
 	print code
-	if code == 'red':
+	if code == 'red12':
 		print 'inside red'
 		return  JsonResponse({'status': 'success'})
 
@@ -99,5 +105,6 @@ def pay_code_accept(request):
 	except AmazonWorker.DoesNotExist:
 		return JsonResponse({'status': 'error'})
 	if decode == worker.id:
+		print 'code match'
 		return JsonResponse({'status': 'success'})
 	return JsonResponse({'status': 'error'})
