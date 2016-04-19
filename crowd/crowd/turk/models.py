@@ -26,7 +26,7 @@ class AmazonWorker(TimeStampedModel):
 	# aws_key = models.CharField(
 	#     _("Amazon worker key"), unique=True, null=True, max_length=255)
 
-	bias = models.IntegerField(_("bias"), default=0)
+	bias = models.FloatField(_("bias"), default=0)
 
 	uncertain_count = models.IntegerField(_("uncertainity count"), default=1)
 
