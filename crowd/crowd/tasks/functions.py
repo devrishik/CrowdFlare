@@ -23,7 +23,7 @@ def file_len(fname):
 def create_worker_task_assignments(worker):
 	# get 20 news tasks
 	news = 20
-	non_news = 50 - news
+	non_news = 40 - news
 	news_fname = 'crowd/news_website_list.txt'
 	non_news_fname = 'crowd/non_news_website_list.txt'
 

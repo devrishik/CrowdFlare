@@ -99,7 +99,6 @@ def pay_code_accept(request):
 	if code == 'red12':
 		print 'inside red'
 		return  JsonResponse({'status': 'success'})
-
 	try:
 		decode = AmazonWorker.hashid.decode(code)[0]
 	except IndexError:
