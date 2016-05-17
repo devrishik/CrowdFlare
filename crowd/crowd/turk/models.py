@@ -19,22 +19,37 @@ from hashids import Hashids
 class AmazonWorker(TimeStampedModel):
 	"""Worker from Amazon"""
 	hashid = Hashids(salt=settings.SECRET_KEY, min_length=16)
-	
-	# user = models.ForeignField(User)	
+	GOOD = 'G'
+	RANDOM = 'R'
+	MALICIOUS = 'M'
+	CLASSIFICATION_CHOICES = (
+	    (GOOD, 'Good'),
+	    (RANDOM, 'Random'),
+	    (MALICIOUS, 'Malicious'),
+	)
+
 	aws_worker_id = models.CharField(
 	    _("Amazon worker id"), blank=True, max_length=255, null=True)
-	# aws_key = models.CharField(
-	#     _("Amazon worker key"), unique=True, null=True, max_length=255)
-
 	bias = models.FloatField(_("bias"), default=0)
-
 	uncertain_count = models.IntegerField(_("uncertainity count"), default=1)
+	classification = models.CharField(
+		_("Classification as GRM"),
+	    choices=CLASSIFICATION_CHOICES,
+	    default=None,
+		max_length=1,
+	    null=True
+	)
+	exit_bias = models.FloatField(_("Exit bias"), default=0)
 
 	def __str__(self):
 	    return self.id.__str__()
 
 	def get_hashid(self):
 		return self.hashid.encode(self.id)
+
+	def set_exit_classification_bias(self, bias, classification):
+		self.exit_bias = bias
+		self.classification = classification
 
     # def save(self, *args, **kwargs):
     #     old_bias = self.bias

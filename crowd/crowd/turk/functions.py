@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from .models import AmazonWorker, Assignment, HIT
 from crowd.tasks.functions import create_worker_task_assignments
 
@@ -24,3 +26,22 @@ def process_request(hit, assignment_id, submission_url, worker_id):
 		create_worker_task_assignments(worker)
 
 	return None
+
+def check_worker_uncertain_task_limit(worker_instance):
+	print 'check_worker_uncertain_task_limit'
+	print 'bias = ' + worker_instance.bias.__str__()
+	
+	task_assignments = worker_instance.task_assignments.exclude(user_answer=None)
+	if len(task_assignments) < settings.LONG_UNCERTAIN_SPAN_LIMIT:
+		return False
+	
+	count = 0
+	for assignment in task_assignments:
+		if assignment.bias_at_answer <= assignment.stop_watermark_point_basis:
+			count += 1
+	
+	print 'count = ' + count.__str__()
+	
+	if count <= 10:
+		return True
+	return False

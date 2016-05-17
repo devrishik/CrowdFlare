@@ -264,3 +264,5 @@ ADMIN_URL = r'^admin/'
 
 MTURK_URL_SANDBOX = 'mechanicalturk.sandbox.amazonaws.com'
 MTURK_URL = 'mechanicalturk.amazonaws.com'
+
+LONG_UNCERTAIN_SPAN_LIMIT = 10
