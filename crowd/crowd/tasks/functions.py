@@ -1,4 +1,5 @@
 import random
+import numpy as np
 
 from .models import Task, TaskAssignment, AnswerOption
 
@@ -65,4 +66,26 @@ def create_worker_task_assignments(worker):
 			except TaskAssignment.DoesNotExist:
 				TaskAssignment.objects.create(user=worker, task=task)
 		f.close()
+
+
+def update_gradient(task_assignment):
+	print '```````update_gradient`````'
+	print 'task_assignment' + str(task_assignment.id)
+
+	# get TAs before this one
+	task_assignments = task_assignment.user.task_assignments.filter(
+		user_answer_time__lte=task_assignment.user_answer_time
+		).exclude(user_answer=None).order_by('user_answer_time')
+	if len(task_assignments) < 3:
+		return
+	biases = []
+	r_task_assignments = task_assignments.reverse()[:3]
+	for ta in r_task_assignments:
+		biases += [ta.bias_at_answer]
+	recent_bias = np.array(biases, dtype=np.float)
+	gradients = np.gradient(recent_bias)
+
+	prev_ta = r_task_assignments[1]
+	prev_ta.gradient_at_answer = gradients[1]
+	prev_ta.save()
 

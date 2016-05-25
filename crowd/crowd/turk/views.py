@@ -46,7 +46,8 @@ def index(request):
 @xframe_options_exempt
 def question(request):
 	from crowd.tasks.models import TaskAssignment, Task
-	
+	from crowd.tasks.functions import update_gradient
+
 	if request.method == 'POST':
 		print request.POST
 		worker_id = request.POST.get('worker_id', None)
@@ -63,6 +64,7 @@ def question(request):
 		worker = AmazonWorker.objects.get(aws_worker_id=worker_id)
 		worker.bias = ta.bias_at_answer
 		worker.save()
+		update_gradient(ta)
 		url = request.get_full_path()
 		return redirect(url + '?worker_id={0}'.format(worker_id))
 	

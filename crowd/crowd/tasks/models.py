@@ -3,9 +3,11 @@ from __future__ import unicode_literals, absolute_import
 
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models.signals import post_save
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
+from .signals import check_good_worker
 from crowd.turk.models import AmazonWorker
 from crowd.utilities.models import TimeStampedModel
 
@@ -22,6 +24,7 @@ class TaskAssignment(TimeStampedModel):
 	user_answer = models.ForeignKey('AnswerOption', null=True)
 	user_answer_time = models.DateTimeField(null=True)
 	bias_at_answer = models.FloatField(_("bias"), default=0)
+	gradient_at_answer = models.FloatField(_("Gradient"), default = 0)
 
 	maximum = 10
 	middle = 0
@@ -68,6 +71,8 @@ class TaskAssignment(TimeStampedModel):
 		else:												# current negative bias
 			d = self.maximum + old_bias
 			return old_bias - self.behaviour_percent*d
+
+post_save.connect(check_good_worker, sender=TaskAssignment)
 
 
 class AnswerOption(TimeStampedModel):

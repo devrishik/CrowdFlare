@@ -28,20 +28,26 @@ def process_request(hit, assignment_id, submission_url, worker_id):
 	return None
 
 def check_worker_uncertain_task_limit(worker_instance):
-	print 'check_worker_uncertain_task_limit'
+	print '`````check_worker_uncertain_task_limit`````'
 	print 'bias = ' + worker_instance.bias.__str__()
 	
-	task_assignments = worker_instance.task_assignments.exclude(user_answer=None)
+	task_assignments = worker_instance.task_assignments.exclude(user_answer=None).exclude(bias_at_answer=0)
 	if len(task_assignments) < settings.LONG_UNCERTAIN_SPAN_LIMIT:
 		return False
-	
+
 	count = 0
+	highest = 0
 	for assignment in task_assignments:
 		if assignment.bias_at_answer <= assignment.stop_watermark_point_basis:
 			count += 1
+			if highest < count:
+				highest = count
+		else:
+			count = 0
 	
 	print 'count = ' + count.__str__()
+	print 'highest = ' + highest.__str__()
 	
-	if count <= 10:
-		return True
-	return False
+	if highest <= 10:
+		return False
+	return True

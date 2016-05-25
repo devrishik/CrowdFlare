@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.contrib.postgres.fields import ArrayField
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
@@ -40,6 +40,7 @@ class AmazonWorker(TimeStampedModel):
 	    null=True
 	)
 	exit_bias = models.FloatField(_("Exit bias"), default=0)
+	exit_round = models.IntegerField(_("Exit round"), null=True)
 
 	def __str__(self):
 	    return self.id.__str__()
@@ -48,13 +49,14 @@ class AmazonWorker(TimeStampedModel):
 		return self.hashid.encode(self.id)
 
 	def set_exit_classification_bias(self, bias, classification):
+		'''to be used before save()'''
 		self.exit_bias = bias
 		self.classification = classification
 
-    # def save(self, *args, **kwargs):
-    #     old_bias = self.bias
-    #     super(AmazonWorker, self).save(*args, **kwargs)
-
+	def set_exit_round(self, n):
+		'''to be used before save()'''
+		self.exit_round = n
+		# self.save()
 
 
 pre_save.connect(upate_uncertain_count, sender=AmazonWorker)

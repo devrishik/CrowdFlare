@@ -266,3 +266,5 @@ MTURK_URL_SANDBOX = 'mechanicalturk.sandbox.amazonaws.com'
 MTURK_URL = 'mechanicalturk.amazonaws.com'
 
 LONG_UNCERTAIN_SPAN_LIMIT = 10
+GOOD_GRADIENT_DELTA_BIAS = 0.1
+GOOD_GRADIENT_BIAS_LENGTH = 9
