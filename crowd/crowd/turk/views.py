@@ -1,5 +1,6 @@
 import datetime
 
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.http import JsonResponse
@@ -92,6 +93,7 @@ def question(request):
 		}
 	return render(request, template, context)
 
+@csrf_exempt
 @xframe_options_exempt
 def pay_code_accept(request):
 	worker_id = request.POST.get('worker_id', None)

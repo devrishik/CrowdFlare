@@ -101,7 +101,7 @@ class Assignment(TimeStampedModel):
 		return self.id.__str__() + ' ' + self.assignment_id.__str__()
 
 	assignment_id = models.CharField(
-		_("Amazon Assignment Id"), unique=True, null=True, max_length=255)
+		_("Amazon Assignment Id"), null=True, max_length=255)
 	user = models.ForeignKey(AmazonWorker)
 	hit = models.ForeignKey(HIT)
 	# accepted_time = self.created_time
