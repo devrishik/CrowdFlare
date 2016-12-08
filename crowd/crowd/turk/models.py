@@ -58,6 +58,10 @@ class AmazonWorker(TimeStampedModel):
 		self.exit_round = n
 		# self.save()
 
+	def get_tasks(self):
+		''' get tasks assigned to this user '''
+	pass
+
 
 pre_save.connect(upate_uncertain_count, sender=AmazonWorker)
 
