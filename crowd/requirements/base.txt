@@ -46,6 +46,4 @@ celery==3.1.19
 # Your custom requirements go here
 hashids==1.1.0
 numpy==1.11.0
-SciPy
-markov
-
+pomegranate==0.6.1

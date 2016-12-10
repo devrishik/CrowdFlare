@@ -16,6 +16,7 @@ class Task(TimeStampedModel):
 	title = models.CharField(_("Title"), max_length=255)
 	question = models.CharField(_("Question"), max_length=1000)
 	answers = models.ManyToManyField('AnswerOption')
+	# gold = models.BooleanField(_("Gold task?"), default=False)
 
 
 class TaskAssignment(TimeStampedModel):

@@ -12,9 +12,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField, JSONField
 
-# from .signals import check_good_worker
 # from crowd.turk.models import AmazonWorker
 from crowd.utilities.models import TimeStampedModel
 
@@ -23,17 +22,43 @@ class HMM(TimeStampedModel):
     Hidden Markov Model
     """
     name = models.CharField(max_length=200, null=True)
-    trans = ArrayField(ArrayField(models.FloatField()), null=True)
-    ems = ArrayField(ArrayField(models.FloatField()), null=True)
+    json_model = JSONField(null=True)
     states = ArrayField(models.FloatField(), null=True)
     gold_ratio = models.FloatField(null=True)
-    
+
 
     def __unicode__(self):
-        return self.name
+        return self.id
 
-    # def __init__(self, ):
-    #   self.hmm = HiddenMarkovModel.from_matrix(self.trans, self.ems, self.states)
+    @property
+    def _model(self):
+        return HiddenMarkovModel.from_json(self.json_model)
+
+    def new_gold_ratio(self, obsevation):
+        '''
+        calculate new gold ratio
+        '''
+        try:
+            prediction = int(self._model.predict(obsevation)[0])
+        except Exception as e:
+            print e
+            prediction = 8
+        return self.calculate_gold(prediction)
+
+    def calculate_gold(self, prediction):
+        # y = -10/3*x + 7/3
+        self.gold_ratio = (-10.0/3) * prediction + 7.0/4
+        self.save()
+        return self.gold_ratio
+
+    def train(self, observations):
+        '''
+        trains the model and returns the new json
+        '''
+        model = self._model
+        print model.fit(observations, algorithm='baum-welch', stop_threshold=1)
+        return model.to_json()
+
 
     def get_new_emissions(self):
         # # Replace all -inf with 0
