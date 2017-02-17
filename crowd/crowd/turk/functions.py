@@ -14,11 +14,18 @@ def process_request(hit, assignment_id, submission_url, worker_id):
 			aws_worker_id=worker_id)
 
 	print 'worker.id' + worker.id.__str__()
-	assignment, created = Assignment.objects.get_or_create(
-		assignment_id=assignment_id,
-		url_turk_submission=submission_url,
-		user=worker,
-		hit=hit)
+	try:
+		assignment = Assignment.objects.get(
+			assignment_id=assignment_id,
+			user=worker,
+			hit=hit)
+		created = False
+	except Assignment.DoesNotExist:
+		assignment, created = Assignment.objects.get_or_create(
+			assignment_id=assignment_id,
+			url_turk_submission=submission_url,
+			user=worker,
+			hit=hit)
 	print assignment.id, created
 
 	if created:

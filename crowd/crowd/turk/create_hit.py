@@ -17,7 +17,7 @@ title = "News or not"
 description = "Given a url, find if its a news website or not"
 keywords = ["news", "research study", "penn state"]
 frame_height = 500 # the height of the iframe holding the external hit
-amount = 0.15
+amount = 0.75
  
 questionform = boto.mturk.question.ExternalQuestion( url, frame_height )
 

@@ -32,10 +32,10 @@ def create_worker_task_assignments(worker):
 
 	# # line_numbers = []
 	# # get_random_numbers_for_file(line_numbers, news, file_len(news_fname))
-	news_line_numbers = [2, 1, 0, 12, 11, 6, 7, 13, 10, 26]
+	news_line_numbers = [2, 1, 0, 12, 11, 6, 7, 13, 9, 26]
 	# # line_numbers = []
 	# # get_random_numbers_for_file(line_numbers, non_news, file_len(non_news_fname))
-	n_news_line_numbers = [122, 42, 0, 26, 120, 47, 5, 125, 61, 64]
+	n_news_line_numbers = [122, 40, 0, 26, 120, 46, 5, 125, 61, 66]
 
 	with open(news_fname) as f1, open(non_news_fname) as f2:
 		l1 = f1.readlines()
