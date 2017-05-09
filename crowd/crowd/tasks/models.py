@@ -73,7 +73,7 @@ class TaskAssignment(TimeStampedModel):
 			d = self.maximum + old_bias
 			return old_bias - self.behaviour_percent*d
 
-post_save.connect(check_good_worker, sender=TaskAssignment)
+# post_save.connect(check_good_worker, sender=TaskAssignment)
 
 
 class AnswerOption(TimeStampedModel):
