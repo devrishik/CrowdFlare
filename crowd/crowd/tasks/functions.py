@@ -29,7 +29,7 @@ def create_worker_task_assignments(worker):
 	news_fname = 'crowd/news_website_list.txt'
 	non_news_fname = 'crowd/non_news_website_list.txt'
 
-
+	print 'create_worker_task_assignments'
 	# # line_numbers = []
 	# # get_random_numbers_for_file(line_numbers, news, file_len(news_fname))
 	news_line_numbers = [2, 1, 0, 12, 11, 6, 7, 13, 9, 26]
@@ -46,18 +46,18 @@ def create_worker_task_assignments(worker):
 			try:
 				task1 = Task.objects.get(question=l1[d])
 			except Task.DoesNotExist:
-				task1 = Task.objects.create(question=l1[d], title='Is this news?')
+				task1 = Task.objects.create(question=l1[d], title='Is this a news website?')
 				task1.answers.add(
-					AnswerOption.objects.create(text="Yes", correct=True),
-					AnswerOption.objects.create(text="No"))
+					AnswerOption.objects.create(text="yes", correct=True),
+					AnswerOption.objects.create(text="no"))
 				task1.save()
 			try:
 				task2 = Task.objects.get(question=l2[t])
 			except Task.DoesNotExist:
-				task2 = Task.objects.create(question=l2[t], title='Is this news?')
+				task2 = Task.objects.create(question=l2[t], title='Is this a news website?')
 				task2.answers.add(
-					AnswerOption.objects.create(text="Yes", correct=True),
-					AnswerOption.objects.create(text="No"))
+					AnswerOption.objects.create(text="yes"),
+					AnswerOption.objects.create(text="no", correct=True))
 				task2.save()
 			x = random.random()
 			tasks = [task1] + [task2]

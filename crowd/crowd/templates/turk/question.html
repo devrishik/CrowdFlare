@@ -5,6 +5,10 @@
 
 {% block content %}
 {% if task %}
+{% if warning %}
+<p><strong>{{ warning }}</strong></p>
+{% endif %}
+
 <p>{{ task.title }}</p>
 <p>
 	Is this website <a href="http://{{ task.question }}" target="_blank">{{ task.question }}</a> for news?

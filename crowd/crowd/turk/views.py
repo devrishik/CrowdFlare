@@ -49,6 +49,8 @@ def question(request):
 	from crowd.tasks.models import TaskAssignment, Task
 	from crowd.tasks.functions import update_gradient
 
+	warning = None
+
 	if request.method == 'POST':
 		print request.POST
 		worker_id = request.POST.get('worker_id', None)
@@ -58,10 +60,10 @@ def question(request):
 		task = ta.task
 		if not ta.user_answer:
 			ta.user_answer_time = datetime.datetime.now()
-		ta.user_answer = task.answers.get(text=answer)
+		ta.user_answer = task.answers.get(text__iexact=answer)
+		print ta.user_answer, ta.user_answer.correct
 		ta.bias_at_answer = ta.get_new_bias()
 		ta.save()
-		print 'new bias -> ' + ta.bias_at_answer.__str__()
 		worker = AmazonWorker.objects.get(aws_worker_id=worker_id)
 		worker.bias = ta.bias_at_answer
 		worker.save()
@@ -77,6 +79,9 @@ def question(request):
 	except AmazonWorker.DoesNotExist as e:
 		return JsonResponse({'error': e.message})
 	task_assignments = worker.task_assignments.filter(user_answer=None)
+	done_task_assignments = worker.task_assignments.exclude(user_answer=None).order_by('-user_answer_time')[:4]
+	if worker.assignment_set.all()[0].hit.expected_bias == 'M' and all(done_ta.user_answer.correct for done_ta in done_task_assignments):
+		warning = "ATTENTION. YOUR GOAL is to select the answer which is opposite to the correct one."
 	if task_assignments:
 		ta = task_assignments[0]
 		task = ta.task
@@ -84,7 +89,8 @@ def question(request):
 		context = {
 			'worker_id': worker_id,
 			'task': task,
-			'form': form
+			'form': form,
+			'warning': warning
 		}
 	else:
 		context = {
