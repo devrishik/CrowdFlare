@@ -80,7 +80,7 @@ def question(request):
 		return JsonResponse({'error': e.message})
 	task_assignments = worker.task_assignments.filter(user_answer=None)
 	done_task_assignments = worker.task_assignments.exclude(user_answer=None).order_by('-user_answer_time')[:4]
-	if worker.assignment_set.all()[0].hit.expected_bias == 'M' and all(done_ta.user_answer.correct for done_ta in done_task_assignments):
+	if worker.assignment_set.all()[0].hit.expected_bias == 'M' and all(done_ta.user_answer.correct for done_ta in done_task_assignments) and len(done_task_assignments) > 3:
 		warning = "ATTENTION. YOUR GOAL is to select the answer which is opposite to the correct one."
 	if task_assignments:
 		ta = task_assignments[0]
